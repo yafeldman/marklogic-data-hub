@@ -1,3 +1,5 @@
+# THIS VERSION (1.x) IS NO LONGER ACTIVELY MAINTAINED OR DEVELOPED. IF YOU HAVE AN ACTIVE SUPPORT ACCOUNT WITH MARKLOGIC PLEASE FILE A SUPPORT CASE FOR ANY BUGS/ISSUES. OTHERWISE PLEASE FILE AN ISSUE ON GITHUB.
+
 _The MarkLogic Data Hub Framework is a data integration framework and tool-set to quickly and efficiently integrate data from many sources into a single MarkLogic database, and expose that data._
 
 _The Data Hub Framework is free and open source under the [Apache 2 License](https://github.com/marklogic-community/marklogic-data-hub/blob/1.0-master/LICENSE) and is supported by the community of developers who build and contribute to it. Please note that this open source project and its code and functionality is not representative of MarkLogic Server and is not supported by MarkLogic._
