@@ -636,7 +636,70 @@ pipeline{
                   }
                   }
 		}
-            stage('publishAnddhs'){
+        stage('FlexCodeScan'){
+            when {
+                expression{
+                    node('dhmaster'){
+                        props = readProperties file:'data-hub/pipeline.properties';
+                        println(props['ExecutionBranch'])
+                        return (env.BRANCH_NAME==props['ExecutionBranch'])
+                    }
+                }
+            }
+            agent {label 'dhfLinuxAgent'}
+            steps{
+                script {
+
+                    def palamida_url="http://palamida-2.marklogic.com:8888"
+                    def jwt="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYWxhbWlkYSIsInVzZXJJZCI6MywiaWF0IjoxNjA1NTYxMTc5fQ.5NaV_E4FHSe6vJMTX1siZa6f0U-uKm3ssZIfmsPEPzmdkDvtnNxsXRxI1Mj4mHq0i9cBNEHW_ePYKdFh97Sd9Q"
+
+                    StartScan (baseUrl: palamida_url, projectName: 'ml-dhf', token: jwt)
+
+                    def inventoriesRprt = sh (returnStdout: true, script:'''curl -X GET '''+palamida_url+'''/codeinsight/api/project/inventory/21 -H "Authorization: Bearer '''+jwt+'''" ''')
+
+                    writeFile(file: 'inventoriesRprt.report.json', text: inventoriesRprt)
+
+                    def slurper = new JsonSlurperClassic().parseText(inventoriesRprt.toString().trim())
+
+                    def failures = []
+
+                    slurper.inventoryItems.each { key, value ->
+                        key.vulnerabilities.each { key1, value1 ->
+                            if(key1.vulnerabilityCvssV3Severity == 'CRITICAL' || key1.vulnerabilityCvssV3Severity == 'HIGH'){
+
+                                def msg = " inventory name: $key.name  volnarability name: $key1.vulnerabilityName with Severity V2: $key1.vulnerabilityCvssV2Severity with Severity V3: $key1.vulnerabilityCvssV3Severity "
+                                failures.add(msg)
+
+                            }}}
+
+                    //Send email
+                    if(failures.size()!=0){
+                        def body=''
+                        failures.each { msg -> body=body+msg + '\n' }
+                        sendMail 'Kavitha.Sivagnanam@marklogic.com,yakov.feldman@marklogic.com', body,false,'Flexcode FAILED. HIGH vulnerabilities','inventoriesRprt.report.json'
+                        sh 'exit 1'
+                    }
+
+                    archiveArtifacts artifacts: 'inventoriesRprt.report.json'
+                }
+            }
+            post{
+             failure{
+               script{
+                   def email=''
+                   if(env.CHANGE_AUTHOR){
+                       def author=env.CHANGE_AUTHOR.toString().trim().toLowerCase()
+                       email = getEmailFromGITUser author
+                   }
+                   else {
+                       email=Email
+                   }
+                   sendMail email,'<h3>Pipeline Failed in stage ${STAGE_NAME} <a href=${BUILD_URL}/console> Check Console Output Here</a></h4>',false,' pipeline Failed in ${STAGE_NAME} '
+              }
+           }}
+        }
+
+        stage('publishAnddhs'){
         		when {
                 	            expression{
                 	            node('dhmaster'){
