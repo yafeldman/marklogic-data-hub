@@ -1,6 +1,7 @@
 plugins {
     // Declaring this at root level so it's available for every subproject without declaring a version
     id "net.saliman.properties" version "1.5.1"
+    id 'org.sonarqube' version '3.0'
 }
 
 allprojects {
@@ -38,6 +39,13 @@ subprojects {
             xml.enabled true
         }
     }
+
+sonarqube {
+    properties {
+        property 'sonar.host.url', 'http://sonar.marklogic.com:9000'
+    }
+}
+
 }
 
 //Task to update versions in files they are hardcoded. If version is hardcoded in any other files in the future,it has to be added to the list
@@ -71,4 +79,11 @@ task updateVersion {
             }
         }
     }
+
+sonarqube {
+    properties {
+        property 'sonar.host.url', 'http://sonar.marklogic.com:9000'
+    }
+}
+
 }
