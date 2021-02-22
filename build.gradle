@@ -1,7 +1,7 @@
 plugins {
     // Declaring this at root level so it's available for every subproject without declaring a version
     id "net.saliman.properties" version "1.5.1"
-    id 'org.sonarqube'
+    id "org.sonarqube" version "3.1.1"
 }
 
 allprojects {
