@@ -84,6 +84,6 @@ task updateVersion {
 //    properties {
 //        property 'sonar.host.url', 'http://sonar.marklogic.com:9000'
 //    }
-}
+//}
 
 }
