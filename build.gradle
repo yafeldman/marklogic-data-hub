@@ -40,11 +40,11 @@ subprojects {
         }
     }
 
-sonarqube {
-    properties {
-        property 'sonar.host.url', 'http://sonar.marklogic.com:9000'
-    }
-}
+//sonarqube {
+//    properties {
+//        property 'sonar.host.url', 'http://sonar.marklogic.com:9000'
+//    }
+//}
 
 }
 
@@ -80,10 +80,10 @@ task updateVersion {
         }
     }
 
-sonarqube {
-    properties {
-        property 'sonar.host.url', 'http://sonar.marklogic.com:9000'
-    }
+//sonarqube {
+//    properties {
+//        property 'sonar.host.url', 'http://sonar.marklogic.com:9000'
+//    }
 }
 
 }
