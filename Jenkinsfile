@@ -64,7 +64,7 @@ pipeline{
         stage('rh8 core latest java'){
           agent { label 'dhfLinuxAgent'}
           environment{
-             JAVA_HOME_DIR="~/java/jdk-16.0.1"
+             JAVA_HOME_DIR="/home/$USER/java/jdk-16.0.1"
              JAVA_HOME="$JAVA_HOME_DIR"
              PATH="$JAVA_HOME/bin:$PATH"
           }
