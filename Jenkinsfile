@@ -1,16 +1,17 @@
 @Library('shared-libraries') _
 
 void CoreRh8Tests(String type,String mlVersion){
-        copyRPM type,mlVersion
-        setUpML '$WORKSPACE/xdmp/src/Mark*.rpm'
-        sh '''
-export JAVA_HOME=$JAVA_HOME_DIR
-export PATH=$JAVA_HOME/bin:$PATH
-cd $WORKSPACE/data-hub
-./gradlew -g ./cache-build clean -i bootstrap test
 
-'''
-        junit '**/TEST-*.xml'
+    copyRPM type,mlVersion
+    setUpML '$WORKSPACE/xdmp/src/Mark*.rpm'
+    sh '''
+#     export JAVA_HOME=$JAVA_HOME_DIR
+#     export PATH=$JAVA_HOME/bin:$PATH
+     cd $WORKSPACE/data-hub
+     ./gradlew -i -g ./cache-build clean bootstrap test
+
+   '''
+   junit '**/TEST-*.xml'
 }
 
 void BuildDatahub(){
@@ -30,6 +31,7 @@ void BuildDatahub(){
 
 pipeline{
 	agent none;
+//    agent 'dhfLinuxAgent'
 	options {
   	checkoutToSubdirectory 'data-hub'
   	buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '')
@@ -42,8 +44,10 @@ pipeline{
 	}
 
     stages {
+
+        /*
 		stage('Build-datahub'){
-            agent { label 'dhfLinuxAgent'}
+//            agent { label 'dhfLinuxAgent'}
 			steps{BuildDatahub()}
 				post{
                    failure {
@@ -61,6 +65,8 @@ pipeline{
                   }
                   }
 		}
+
+*/
 
         stage('rh8 core latest java'){
           agent { label 'dhfLinuxAgent'}
