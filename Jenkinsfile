@@ -1,7 +1,7 @@
 @Library('shared-libraries') _
 
-void CoreRh8Tests(){
-        copyRPM 'Latest','10.0'
+void CoreRh8Tests(String type,String mlVersion){
+        copyRPM type,mlVersion
         setUpML '$WORKSPACE/xdmp/src/Mark*.rpm'
         sh '''
 export JAVA_HOME=$JAVA_HOME_DIR
