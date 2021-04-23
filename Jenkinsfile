@@ -68,7 +68,7 @@ pipeline{
           environment{
              JAVA_HOME_DIR="~/java/jdk-16.0.1"
              JAVA_HOME="$JAVA_HOME_DIR"
-             PATH=$JAVA_HOME/bin:$PATH
+             PATH="$JAVA_HOME/bin:$PATH"
           }
           steps {
               timeout(time: 3,  unit: 'HOURS'){
