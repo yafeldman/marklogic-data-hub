@@ -6,6 +6,7 @@ void CoreRh8Tests(String type,String mlVersion){
         sh '''
 export JAVA_HOME=$JAVA_HOME_DIR
 export PATH=$JAVA_HOME/bin:$PATH
+cd $WORKSPACE/data-hub
 ./gradlew -g ./cache-build clean -i bootstrap test
 
 '''
