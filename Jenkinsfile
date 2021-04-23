@@ -39,6 +39,8 @@ pipeline{
 	parameters{
 	string(name: 'Email', defaultValue: 'yakov.feldman@marklogic.com' ,description: 'Who should I say send the email to?')
 	}
+
+    stages {
 		stage('Build-datahub'){
             environment{
                 JAVA_HOME_DIR="/home/$USER/java/jdk-16.0.1"
@@ -84,4 +86,4 @@ pipeline{
              sendMail Email,"<h3>$STAGE_NAME Server on Linux Platform </h3><h4><a href=${JENKINS_URL}/blue/organizations/jenkins/Datahub_CI/detail/$JOB_BASE_NAME/$BUILD_ID/tests><font color=red>Check the Test Report</font></a></h4><h4><a href=${RUN_DISPLAY_URL}>Check the Pipeline View</a></h4><h4> <a href=${BUILD_URL}/console> Check Console Output Here</a></h4><h4>Please create bugs for the failed regressions and fix them</h4>",false,"$BRANCH_NAME on $STAGE_NAME Failed"
           }}
         }
-}
+}}
