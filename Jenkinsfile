@@ -42,10 +42,6 @@ pipeline{
 
     stages {
 		stage('Build-datahub'){
-            environment{
-                JAVA_HOME_DIR="/home/$USER/java/jdk-16.0.1"
-            }
-
             agent { label 'dhfLinuxAgent'}
 			steps{BuildDatahub()}
 				post{
