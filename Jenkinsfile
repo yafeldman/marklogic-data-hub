@@ -77,7 +77,7 @@ pipeline{
           }
           steps {
               timeout(time: 3,  unit: 'HOURS'){
-              catchError(buildResult: 'SUCCESS', catchInterruptions: true) { CoreRh8Tests("Latest", "10.0") }
+              catchError(buildResult: 'SUCCESS', catchInterruptions: true, , stageResult: 'FAILURE') { CoreRh8Tests("Latest", "10.0") }
            }}
          post{
             success {
