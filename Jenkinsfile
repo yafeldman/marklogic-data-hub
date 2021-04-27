@@ -600,6 +600,9 @@ pipeline{
 		}
 		*/
 		stage('tests'){
+        environment{
+            CHANGE_TITLE="DEVO-237: Jenkins plugin jiraAddComment fails with 403 error code"
+        }
 		parallel {
             stage('Core-Unit-Tests') {
                 agent { label 'dhfLinuxAgent' }
