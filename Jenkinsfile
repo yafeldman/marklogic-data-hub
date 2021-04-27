@@ -261,8 +261,8 @@ void Tests(){
 //        junit '**/TEST-*.xml'
         if(env.CHANGE_TITLE){
             JIRA_ID=env.CHANGE_TITLE.split(':')[0]
-//            jiraAddComment comment: 'Jenkins Core Unit Test Results For PR Available', idOrKey: JIRA_ID, site: 'JIRA'
-            jiraAddComment input: 'Jenkins Core Unit Test Results For PR Available', idOrKey: JIRA_ID, site: 'JIRA'
+           jiraAddComment comment: 'Jenkins Core Unit Test Results For PR Available', idOrKey: JIRA_ID, site: 'JIRA'
+       //     jiraAddComment input: 'Jenkins Core Unit Test Results For PR Available', idOrKey: JIRA_ID, site: 'JIRA'
 
         }
         if(!env.CHANGE_URL){
