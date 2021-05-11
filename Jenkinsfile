@@ -39,8 +39,9 @@ pipeline{
     DMC_PASSWORD= credentials('MLBUILD_PASSWORD')
 	}
 
-    /*
 	stages{
+
+        /*
 		stage('Build-datahub'){
 		agent { label 'dhfLinuxAgent'}
 			steps{
@@ -72,7 +73,7 @@ pipeline{
                   }
                   }
 		}
-		
+
      */
 
 		stage('w12_SN_9.0-11'){
