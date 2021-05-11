@@ -16,8 +16,8 @@ def dhfWinTests(String mlVersion, String type){
         	        ''').trim().split();
     def bldPath=bldOutput[bldOutput.size()-1]
     setupMLWinCluster bldPath,pkgLoc
-    bat 'cd data-hub & gradlew.bat -g ./cache-build clean'
-    bat 'cd data-hub & gradlew.bat marklogic-data-hub:test  || exit /b 0'
+    bat 'cd data-hub & gradlew.bat -g ./cache-build clean marklogic-data-hub:test --tests DeployCustomUserFieldsTest'
+    //bat 'cd data-hub & gradlew.bat marklogic-data-hub:test  || exit /b 0'
     //bat 'cd data-hub & gradlew.bat ml-data-hub:test  || exit /b 0'
     //bat 'cd data-hub & gradlew.bat web:test || exit /b 0'
     junit '**/TEST-*.xml'
