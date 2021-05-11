@@ -20,7 +20,7 @@ def dhfWinTests(String mlVersion, String type){
 //    bat 'cd data-hub & gradlew.bat -g ./cache-build clean'
 //    bat 'cd data-hub & gradlew.bat marklogic-data-hub:test --tests DeployCustomUserFieldsTest || exit /b 0'
     bat 'cd data-hub & gradlew.bat clean'
-    bat 'cd data-hub & gradlew.bat marklogic-data-hub:test --tests DeployCustomUserFieldsTest || exit /b 0'
+    bat 'cd data-hub & gradlew.bat marklogic-data-hub:test --tests DeployCustomUserFieldsTest --tests FlowManagerImplTest --tests DetermineInputFilePathTest || exit /b 0'
 //    bat 'cd data-hub & gradlew.bat marklogic-data-hub:test  || exit /b 0'
     //bat 'cd data-hub & gradlew.bat ml-data-hub:test  || exit /b 0'
     //bat 'cd data-hub & gradlew.bat web:test || exit /b 0'
@@ -89,15 +89,9 @@ pipeline{
                 }
             }}
 			post{
-                 success {
-                    println("w12_SN_9.0-11 Tests Completed")
-                    sendMail Email,'Check the Pipeline View Here: ${JENKINS_URL}/blue/organizations/jenkins/Datahub_CI/detail/$JOB_BASE_NAME/$BUILD_ID  \n\n\n Check Console Output Here: ${BUILD_URL}/console \n\n\n All the End to End tests on W2k12 SN 9.0-12 of the branch $BRANCH_NAME passed and the next stage is to merge it to release branch if all the end-end tests pass',false,'w12_SN_9.0-12 Tests for $BRANCH_NAME Passed'
-                   }
-                   unstable {
-                      println("w12_SN_9.0-11 Tests Failed")
-                      sendMail Email,'Check the Pipeline View Here: ${JENKINS_URL}/blue/organizations/jenkins/Datahub_CI/detail/$JOB_BASE_NAME/$BUILD_ID  \n\n\n Check Console Output Here: ${BUILD_URL}/console \n\n\n Some of the End to End tests of the branch $BRANCH_NAME on 9.0-12 w2k12 SN failed. Please fix the tests and create a PR or create a bug for the failures.',false,'w12_SN_9.0-12 Tests for $BRANCH_NAME Failed'
-                  }
-                  }
+                 success {println("w12_SN_9.0-11 Tests Completed")}
+                 unstable {println("w12_SN_9.0-11 Tests Failed")}
+            }
 		}
     }
 }
