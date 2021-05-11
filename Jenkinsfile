@@ -38,9 +38,8 @@ pipeline{
 	DMC_USER     = credentials('MLBUILD_USER')
     DMC_PASSWORD= credentials('MLBUILD_PASSWORD')
 	}
-	parameters{
-	string(name: 'Email', defaultValue: 'stadikon@marklogic.com,kkanthet@marklogic.com,sbalasub@marklogic.com,nshrivas@marklogic.com,ssambasu@marklogic.com,rrudin@marklogic.com,rdew@marklogic.com,aebadira@marklogic.com,mwooldri@marklogic.com', description: 'Who should I say send the email to?')
-	}
+
+    /*
 	stages{
 		stage('Build-datahub'){
 		agent { label 'dhfLinuxAgent'}
@@ -73,6 +72,8 @@ pipeline{
                   }
                   }
 		}
+		
+     */
 
 		stage('w12_SN_9.0-11'){
 			agent { label 'dhfWinagent'}
