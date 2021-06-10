@@ -228,9 +228,9 @@ void myabortPrevBuilds(){
     hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
         def exec = build.getExecutor()
 
-        def p = build.getParent()
+//        def p = build.getParent()
 
-        println " PARENT: " + p.getProperty()
+//        println " PARENT: " + p.getProperty()
 
         println " BUILD: " + build.getProperty()
 
