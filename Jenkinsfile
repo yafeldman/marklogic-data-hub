@@ -223,20 +223,6 @@ void UnitTest(){
 
 void PreBuildCheck() {
 
- if(env.CHANGE_ID){
-
-  if(PRDraftCheck()){ sh 'exit 1' }
-
-  if((!env.CHANGE_TITLE.startsWith("DHFPROD-")) && (!env.CHANGE_TITLE.startsWith("DEVO-"))){ sh 'exit 1' }
-
-  if(getReviewState().equalsIgnoreCase("CHANGES_REQUESTED")){
-       println(reviewState)
-       sh 'exit 1'
-  }
-
-  if(!isChangeInUI()){env.NO_UI_TESTS=true}
-
- }
  def obj=new abortPrevBuilds();
  obj.abortPrevBuilds();
 
