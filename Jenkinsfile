@@ -232,7 +232,7 @@ void myabortPrevBuilds(){
 
 //        println " PARENT: " + p.getProperty()
 
-        println " BUILD: " + build.getProperty()
+        println " BUILD: " + build.getProperties()
 
         println " EXECUTOR: " + exec
 
