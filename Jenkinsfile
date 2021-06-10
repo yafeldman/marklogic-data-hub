@@ -228,9 +228,13 @@ void myabortPrevBuilds(){
     hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
         def exec = build.getExecutor()
 
-        println " BUILD: $build"
+        def p = build.getParent()
 
-        println " EXECUTOR: $exec"
+        println " PARENT: " + p.getName()
+
+        println " BUILD: " + build
+
+        println " EXECUTOR: " + exec
 
         if (build.number < currentBuild.number && exec != null) {
             exec.interrupt(
