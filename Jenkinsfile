@@ -279,6 +279,7 @@ pipeline{
 	}
 	parameters{
 	string(name: 'Email', defaultValue: 'yakov.feldman@marklogic.com' ,description: 'Who should I say send the email to?')
+    booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: '')
 	}
 	stages{
 	    stage('Pre-Build-Check'){
