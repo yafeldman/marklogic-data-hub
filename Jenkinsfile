@@ -230,9 +230,9 @@ void myabortPrevBuilds(){
 
         def p = build.getParent()
 
-        println " PARENT: " + p.getName()
+        println " PARENT: " + p.getProperty()
 
-        println " BUILD: " + build
+        println " BUILD: " + build.getProperty()
 
         println " EXECUTOR: " + exec
 
