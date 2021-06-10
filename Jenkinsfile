@@ -232,7 +232,9 @@ void myabortPrevBuilds(){
 
 //        println " PARENT: " + p.getProperty()
 
-        println " BUILD number: " + build.number + " " + build.getProperties().get('log')
+        def parameters = build?.actions.find{it instanceof ParametersAction }?.parameters
+
+        println " BUILD number: " + build.number + " " + parameters
             //.entrySet()
             //.contains('Started by')
 
@@ -245,9 +247,9 @@ void myabortPrevBuilds(){
                     "Aborted by #${currentBuild.number}"
                 )
             )
-//            println("Aborted previous running build #${build.number}")
+            println("Aborted previous running build #${build.number}")
         } else {
-//            println("Build is not running or is current build, not aborting - #${build.number}")
+            println("Build is not running or is current build, not aborting - #${build.number}")
         }
     }
 }
