@@ -221,12 +221,16 @@ void UnitTest(){
         }
 }
 
-def myabortPrevBuilds(){
+void myabortPrevBuilds(){
     def hi = Hudson.instance
     def pname = env.JOB_NAME.split('/')[0]
 
     hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
         def exec = build.getExecutor()
+
+        println " BUILD: $build"
+
+        println " EXECUTOR: $exec"
 
         if (build.number < currentBuild.number && exec != null) {
             exec.interrupt(
