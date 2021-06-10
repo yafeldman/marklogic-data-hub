@@ -234,7 +234,7 @@ void myabortPrevBuilds(){
 
         println " BUILD: " + build.getProperties()
 
-        println " EXECUTOR: " + exec
+//        println " EXECUTOR: " + exec
 
         if (build.number < currentBuild.number && exec != null) {
             exec.interrupt(
