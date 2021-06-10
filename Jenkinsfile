@@ -270,8 +270,9 @@ pipeline{
 	}
 	stages{
 	    stage('Pre-Build-Check'){
-	    agent { label 'dhfLinuxAgent'}
-	    steps{ PreBuildCheck() }
+	    agent { label 'stress-pool'}
+//        agent { label 'dhfLinuxAgent'}
+            steps{ PreBuildCheck() }
 	    post{
 	        failure{
 	            script{
