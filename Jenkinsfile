@@ -232,11 +232,11 @@ void myabortPrevBuilds(){
 
 //        println " PARENT: " + p.getProperty()
 
-        println " BUILD: " + build.getProperties()
+        println " BUILD: " + build.getProperties().ketSet()
 
 //        println " EXECUTOR: " + exec
 
-        if (build.number < currentBuild.number && exec != null) {
+        if (build.number < currentBuild.number && build.isBuilding() && exec != null) {
             exec.interrupt(
                 Result.ABORTED,
                 new CauseOfInterruption.UserInterruption(
