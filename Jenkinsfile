@@ -232,7 +232,7 @@ void myabortPrevBuilds(){
 
 //        println " PARENT: " + p.getProperty()
 
-        println " BUILD number: " + build.number + " " build.getProperties().get('log')
+        println " BUILD number: " + build.number + " " + build.getProperties().get('log')
             //.entrySet()
             //.contains('Started by')
 
