@@ -244,7 +244,7 @@ def myabortPrevBuilds(){
 
 void PreBuildCheck() {
 
- def obj=new myabortPrevBuilds();
+ def obj=new abortPrevBuilds();
  obj.myabortPrevBuilds();
 
 }
