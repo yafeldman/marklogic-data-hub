@@ -1,4 +1,4 @@
-//@Library('shared-libraries') _
+@Library('shared-libraries') _
 import groovy.json.JsonSlurper
 import groovy.json.JsonSlurperClassic
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
