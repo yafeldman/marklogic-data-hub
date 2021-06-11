@@ -52,9 +52,9 @@ void myabortPrevBuilds(){
 
         def exec = build.getExecutor()
 
-        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}
+        def regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}
 
-         println " BUILD number: " + build.number + " " + parameters
+         println " BUILD number: " + build.number + " " + regressions
 
         if (build.number < currentBuild.number && exec != null  ) {
             exec.interrupt(
