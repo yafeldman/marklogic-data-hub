@@ -119,15 +119,15 @@ void myabortPrevBuilds(){
     def hi = Hudson.instance
     def pname = env.JOB_NAME.split('/')[0]
 
-    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().getRawBuild().each{ build ->
+    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
 
         def exec = build.getExecutor()
 
         def parameters = build.getAllActions().find{it instanceof ParametersAction }?.params
 
-        println " BUILD number: " + build.number + " " + parameters
+         println " BUILD number: " + build.number + " " + parameters
 
-        if (build.number < currentBuild.number && build.isBuilding() && exec != null) {
+        if (build.number < currentBuild.number && exec != null && ) {
             exec.interrupt(
                 Result.ABORTED,
                 new CauseOfInterruption.UserInterruption(
