@@ -51,7 +51,7 @@ void myabortPrevBuilds(){
     hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
 
         def exec = build.getExecutor()
-        Boolean regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}
+        Boolean regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions1'}
 
          println " BUILD number: " + build.number + " " + regressions.booleanValue()
 
