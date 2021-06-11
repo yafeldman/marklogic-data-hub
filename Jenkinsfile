@@ -51,11 +51,14 @@ void myabortPrevBuilds(){
     hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
 
         def exec = build.getExecutor()
-        def regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}
+        def regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}?.value
 
-         println " BUILD number: " + build.number + " " + regressions?.getValue()
+//         println " BUILD number: " + build.number + " " + regressions?.getValue()
 
-        if ( (regressions != null && !regressions.getValue()) &&
+        println " BUILD number: " + build.number + " " + regressions
+
+//        if ( (regressions != null && !regressions.getValue()) &&
+        if ( regressions &&
                build.number < currentBuild.number &&
                  exec != null )
         {
