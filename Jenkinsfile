@@ -97,7 +97,7 @@ pipeline{
 	}
 	parameters{
 	string(name: 'Email', defaultValue: 'yakov.feldman@marklogic.com' ,description: 'Who should I say send the email to?')
-    booleanParam(name: 'regressions', defaultValue: false, description: 'indicator if build is for regressions')
+//    booleanParam(name: 'regressions', defaultValue: false, description: 'indicator if build is for regressions')
 	}
 	stages{
 	    stage('Pre-Build-Check'){
