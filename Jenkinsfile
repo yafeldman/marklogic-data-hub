@@ -57,8 +57,10 @@ void myabortPrevBuilds(){
 
         println " BUILD number: " + build.number + " " + regressions
 
+        if(!regressions) {println "INSIDE IF"}
+
 //        if ( (regressions != null && !regressions.getValue()) &&
-        if ( regressions &&
+        if ( !regressions &&
                build.number < currentBuild.number &&
                  exec != null )
         {
