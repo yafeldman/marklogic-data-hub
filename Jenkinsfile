@@ -53,9 +53,9 @@ void myabortPrevBuilds(){
         def exec = build.getExecutor()
         Boolean regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}
 
-         println " BUILD number: " + build.number + " " + regressions?.booleanValue()
+         println " BUILD number: " + build.number + " " + regressions.booleanValue()
 
-        if ( (regressions != null && regressions.booleanValue()) &&
+        if ( (regressions != null && !regressions.booleanValue()) &&
                build.number < currentBuild.number &&
                  exec != null )
         {
