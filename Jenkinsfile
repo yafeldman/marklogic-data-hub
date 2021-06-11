@@ -127,7 +127,7 @@ void myabortPrevBuilds(){
 
          println " BUILD number: " + build.number + " " + parameters
 
-        if (build.number < currentBuild.number && exec != null && ) {
+        if (build.number < currentBuild.number && exec != null  ) {
             exec.interrupt(
                 Result.ABORTED,
                 new CauseOfInterruption.UserInterruption(
