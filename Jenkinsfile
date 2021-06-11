@@ -225,7 +225,8 @@ void myabortPrevBuilds(){
     def hi = Hudson.instance
     def pname = env.JOB_NAME.split('/')[0]
 
-    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().getRawBuild().each{ build ->
+
         def exec = build.getExecutor()
 
 //        def p = build.getParent()
