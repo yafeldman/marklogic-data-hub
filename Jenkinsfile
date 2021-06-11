@@ -1,4 +1,4 @@
-@Library('shared-libraries') _
+//@Library('shared-libraries') _
 import groovy.json.JsonSlurper
 import groovy.json.JsonSlurperClassic
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
@@ -44,98 +44,19 @@ def PRDraftCheck(){
     return jsonObj.draft
 }
 
-def runCypressE2e(){
-    script{
-        copyRPM 'Release','10.0-6'
-        setUpML '$WORKSPACE/xdmp/src/Mark*.rpm'
-        sh 'rm -rf *central*.rpm || true'
-        copyArtifacts filter: '**/*.rpm', fingerprintArtifacts: true, flatten: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
-        sh(script:'''#!/bin/bash
-            export JAVA_HOME=`eval echo "$JAVA_HOME_DIR"`;
-            sudo mladmin install-hubcentral $WORKSPACE/*central*.rpm;
-            sudo mladmin add-javahome-hubcentral $JAVA_HOME
-            sudo mladmin start-hubcentral
-        ''')
-        sh(script:'''#!/bin/bash
-            export JAVA_HOME=`eval echo "$JAVA_HOME_DIR"`;
-            export M2_LOCAL_REPO=$WORKSPACE/$M2_HOME_REPO
-            export GRADLE_USER_HOME=$WORKSPACE$GRADLE_DIR;
-            export PATH=$M2_LOCAL_REPO:$JAVA_HOME/bin:$GRADLE_USER_HOME:$PATH;
-            rm -rf $M2_LOCAL_REPO || true
-            mkdir -p $M2_LOCAL_REPO
-            cd $WORKSPACE/data-hub;
-            ./gradlew publishToMavenLocal -Dmaven.repo.local=$M2_LOCAL_REPO -PnodeDistributionBaseUrl=http://node-mirror.eng.marklogic.com:8080/
-            '''
-        )
-        sh(script:'''
-          #!/bin/bash
-          export JAVA_HOME=`eval echo "$JAVA_HOME_DIR"`;
-          export GRADLE_USER_HOME=$WORKSPACE$GRADLE_DIR;
-          export M2_LOCAL_REPO=$WORKSPACE/$M2_HOME_REPO
-          export PATH=$M2_LOCAL_REPO:$JAVA_HOME/bin:$GRADLE_USER_HOME:$PATH;
-          cd $WORKSPACE/data-hub;
-          rm -rf $GRADLE_USER_HOME/caches;
-          cd marklogic-data-hub-central/ui/e2e;
-          repo="maven {url '"$M2_LOCAL_REPO"'}"
-          sed -i "/repositories {/a$repo" hc-qa-project/build.gradle
-          chmod +x setup.sh;
-          ./setup.sh dhs=false mlHost=localhost mlSecurityUsername=admin mlSecurityPassword=admin;
-          '''
-        )
-        sh(script:'''#!/bin/bash
-            export NODE_HOME=$NODE_HOME_DIR/bin;
-            export PATH=$NODE_HOME:$PATH
-            cd $WORKSPACE/data-hub/marklogic-data-hub-central/ui/e2e
-            npm run cy:run |& tee -a e2e_err.log;
-        '''
-        )
-
-        def output=readFile 'data-hub/marklogic-data-hub-central/ui/e2e/e2e_err.log'
-        if(output.contains("npm ERR!")){
-           // currentBuild.result='UNSTABLE';
-        }
-
-        junit '**/e2e/**/*.xml'
-    }
-}
-
-void UnitTest(){
-        props = readProperties file:'data-hub/pipeline.properties';
-        copyRPM 'Release','10.0-6'
-        setUpML '$WORKSPACE/xdmp/src/Mark*.rpm'
-        sh 'export JAVA_HOME=`eval echo "$JAVA_HOME_DIR"`;export GRADLE_USER_HOME=$WORKSPACE$GRADLE_DIR;export M2_HOME=$MAVEN_HOME/bin;export PATH=$JAVA_HOME/bin:$GRADLE_USER_HOME:$PATH:$MAVEN_HOME/bin;cd $WORKSPACE/data-hub;rm -rf $GRADLE_USER_HOME/caches;set +e;./gradlew clean;./gradlew marklogic-data-hub:bootstrap -i --stacktrace -PnodeDistributionBaseUrl=http://node-mirror.eng.marklogic.com:8080/;sleep 10s;./gradlew marklogic-data-hub-central:test -i --stacktrace -PnodeDistributionBaseUrl=http://node-mirror.eng.marklogic.com:8080/;sleep 10s;./gradlew ml-data-hub:test -i --stacktrace -PnodeDistributionBaseUrl=http://node-mirror.eng.marklogic.com:8080/;sleep 10s;./gradlew marklogic-data-hub-spark-connector:test -i --stacktrace -PnodeDistributionBaseUrl=http://node-mirror.eng.marklogic.com:8080/;sleep 10s;./gradlew installer-for-dhs:test -i --stacktrace -PnodeDistributionBaseUrl=http://node-mirror.eng.marklogic.com:8080/;sleep 10s;./gradlew marklogic-data-hub-client-jar:test -i --stacktrace -PnodeDistributionBaseUrl=http://node-mirror.eng.marklogic.com:8080/'
-        junit '**/TEST-*.xml'
-        jacoco classPattern: 'data-hub/marklogic-data-hub-central/build/classes/java/main/com/marklogic/hub/central,data-hub/marklogic-data-hub-spark-connector/build/classes/java/main/com/marklogic/hub/spark,data-hub/marklogic-data-hub/build/classes/java/main/com/marklogic/hub',exclusionPattern: '**/*Test*.class'
-        if(env.CHANGE_TITLE){
-            JIRA_ID=env.CHANGE_TITLE.split(':')[0]
-            jiraAddComment comment: 'Jenkins Unit Test Results For PR Available', idOrKey: JIRA_ID, site: 'JIRA'
-        }
-        if(!env.CHANGE_URL){
-            env.CHANGE_URL=" "
-        }
-}
-
 void myabortPrevBuilds(){
     def hi = Hudson.instance
     def pname = env.JOB_NAME.split('/')[0]
 
-    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().getRawBuild().each{ build ->
+    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
 
         def exec = build.getExecutor()
 
-//        def p = build.getParent()
+        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.params
 
-//        println " PARENT: " + p.getProperty()
+         println " BUILD number: " + build.number + " " + parameters
 
-        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.parameters
-
-        println " BUILD number: " + build.number + " " + parameters
-            //.entrySet()
-            //.contains('Started by')
-
-//        println " EXECUTOR: " + exec
-
-        if (build.number < currentBuild.number && build.isBuilding() && exec != null) {
+        if (build.number < currentBuild.number && exec != null  ) {
             exec.interrupt(
                 Result.ABORTED,
                 new CauseOfInterruption.UserInterruption(
@@ -178,8 +99,8 @@ pipeline{
 	}
 	stages{
 	    stage('Pre-Build-Check'){
-//	    agent { label 'stress-pool'}
-        agent { label 'dhfLinuxAgent'}
+	    agent { label 'stress-pool'}
+//        agent { label 'dhfLinuxAgent'}
             steps{ PreBuildCheck() }
 	    post{
 	        failure{
