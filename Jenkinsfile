@@ -233,7 +233,7 @@ void myabortPrevBuilds(){
 
 //        println " PARENT: " + p.getProperty()
 
-        def parameters = build?.actions.find{it instanceof ParametersAction }?.parameters
+        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.parameters
 
         println " BUILD number: " + build.number + " " + parameters
             //.entrySet()
