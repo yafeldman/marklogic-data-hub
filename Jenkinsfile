@@ -51,12 +51,14 @@ void myabortPrevBuilds(){
     hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
 
         def exec = build.getExecutor()
-
-        def regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}
+        Boolean regressions = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}
 
          println " BUILD number: " + build.number + " " + regressions
 
-        if (build.number < currentBuild.number && exec != null  ) {
+        if ( (regressions != null && regressions.booleanValue()) &&
+               build.number < currentBuild.number &&
+                 exec != null )
+        {
             exec.interrupt(
                 Result.ABORTED,
                 new CauseOfInterruption.UserInterruption(
@@ -65,7 +67,7 @@ void myabortPrevBuilds(){
             )
             println("Aborted previous running build #${build.number}")
         } else {
-            println("Build is not running or is current build, not aborting - #${build.number}")
+            println("Build is regressions or not running or is current build, not aborting - #${build.number}")
         }
     }
 }
