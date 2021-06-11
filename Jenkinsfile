@@ -123,17 +123,9 @@ void myabortPrevBuilds(){
 
         def exec = build.getExecutor()
 
-//        def p = build.getParent()
-
-//        println " PARENT: " + p.getProperty()
-
-        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.parameters
+        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.params
 
         println " BUILD number: " + build.number + " " + parameters
-            //.entrySet()
-            //.contains('Started by')
-
-//        println " EXECUTOR: " + exec
 
         if (build.number < currentBuild.number && build.isBuilding() && exec != null) {
             exec.interrupt(
@@ -178,8 +170,8 @@ pipeline{
 	}
 	stages{
 	    stage('Pre-Build-Check'){
-//	    agent { label 'stress-pool'}
-        agent { label 'dhfLinuxAgent'}
+	    agent { label 'stress-pool'}
+//        agent { label 'dhfLinuxAgent'}
             steps{ PreBuildCheck() }
 	    post{
 	        failure{
