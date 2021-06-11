@@ -52,7 +52,7 @@ void myabortPrevBuilds(){
 
         def exec = build.getExecutor()
 
-        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.params
+        def parameters = build.getAllActions().find{it instanceof ParametersAction }?.parameters.find{it.name == 'regressions'}.value()
 
          println " BUILD number: " + build.number + " " + parameters
 
